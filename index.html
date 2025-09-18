@@ -73,15 +73,15 @@ async function openTab(name){
   tabs.forEach(t => t.classList.toggle('active', t.dataset.tab===name));
   Object.entries(panels).forEach(([k,el]) => el.hidden = (k!==name));
   if (name==='steps' && !panels.steps.dataset.loaded){
-    const html = await fetch('steps.html').then(r=>r.text());
-    panels.steps.innerHTML = html;
-    panels.steps.dataset.loaded = '1';
-  }
-  if (name==='glossary' && !panels.glossary.dataset.loaded){
-    const html = await fetch('glossary.html').then(r=>r.text());
-    panels.glossary.innerHTML = html;
-    panels.glossary.dataset.loaded = '1';
-  }
+  const html = await fetch('html/steps.html').then(r=>r.text());
+  panels.steps.innerHTML = html;
+  panels.steps.dataset.loaded = '1';
+}
+if (name==='glossary' && !panels.glossary.dataset.loaded){
+  const html = await fetch('html/glossary.html').then(r=>r.text());
+  panels.glossary.innerHTML = html;
+  panels.glossary.dataset.loaded = '1';
+}
 }
 tabs.forEach(btn => btn.addEventListener('click', () => openTab(btn.dataset.tab)));
 
