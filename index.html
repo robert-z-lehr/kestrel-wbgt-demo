@@ -12,73 +12,81 @@
   .tab{padding:8px 12px;border:1px solid var(--border);border-bottom:none;border-top-left-radius:10px;border-top-right-radius:10px;background:#fafafa;cursor:pointer}
   .tab.active{background:#fff;font-weight:600}
   .panel{border:1px solid var(--border);border-radius:10px;padding:16px}
-  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-  input,button{padding:6px 10px;border:1px solid #d0d0d0;border-radius:8px}
-  canvas{max-width:100%;height:auto}
-  code{background:#f6f6f6;padding:0 4px;border-radius:4px}
   .muted{color:#666}
+  .pill{display:inline-block;padding:4px 10px;border:1px solid var(--border);border-radius:999px;background:#fafafa;margin-right:6px}
 </style>
 </head>
 <body>
 <main>
   <nav class="tabs">
     <button class="tab active" data-tab="main">Main</button>
+    <button class="tab" data-tab="data">Data</button>
     <button class="tab" data-tab="steps">How-To Steps</button>
     <button class="tab" data-tab="glossary">Glossary</button>
-    <!-- NEW: Images tab -->
     <button class="tab" data-tab="images">Images</button>
   </nav>
 
+  <!-- Main: high-level project overview -->
   <section id="main" class="panel">
-    <h1>Kestrel 5400 WBGT/TWL Demo</h1>
-    <p class="muted">Load a CSV exported from Kestrel LiNK (or paste CSV), then render WBGT.</p>
+    <h1>Kestrel 5400 — Heat Stress & Microclimate Demo</h1>
+    <p>
+      This project evaluates the practicality of using a Kestrel 5400 Heat Stress Tracker to measure
+      <strong>temperature</strong> and other relevant environmental factors at <strong>transit stops</strong> and
+      <strong>intersections</strong>. We collect field data and visualize indices used in heat-risk management.
+    </p>
 
-    <div class="row" style="margin:8px 0 16px">
-      <div>
-        <label for="csvFile">Load CSV from your computer</label><br>
-        <input type="file" id="csvFile" accept=".csv">
-      </div>
-      <div>
-        <label for="csvUrl">…or fetch CSV by URL (e.g., <code>data/run.csv</code>)</label><br>
-        <input id="csvUrl" placeholder="data/session_sample.csv" style="min-width:280px">
-        <button id="fetchBtn">Fetch</button>
-      </div>
-    </div>
+    <h2>Purpose</h2>
+    <ul>
+      <li>Assess repeatable measurement protocols at curbside locations (bus stops, crosswalks, medians).</li>
+      <li>Compare micro-environments (sun/shade, asphalt/grass, wind exposure) and their impact on heat stress.</li>
+      <li>Demonstrate transparent <em>data provenance</em>: device settings, placement, logging, and export steps.</li>
+    </ul>
 
-    <details>
-      <summary>…or paste CSV (must include <code>timestamp</code> and a WBGT column)</summary>
-      <textarea id="csvText" style="width:100%;height:160px"></textarea>
-      <div style="margin-top:8px">
-        <button id="pasteBtn">Render pasted CSV</button>
-      </div>
-    </details>
+    <h2>What’s in this site</h2>
+    <p class="muted">Use the tabs above:</p>
+    <p>
+      <span class="pill">Data</span> Upload or fetch your CSV and render charts.<br>
+      <span class="pill">How-To Steps</span> Field checklist based on the user guide (plus link to the full manual).<br>
+      <span class="pill">Glossary</span> Definitions, formulas, and how each variable is used.<br>
+      <span class="pill">Images</span> Site photos, device setup, and an example SVG illustration.
+    </p>
 
-    <div style="margin-top:16px">
-      <canvas id="wbgtChart" width="960" height="420" aria-label="WBGT chart"></canvas>
-      <p class="muted">Field protocol: allow 8–15 minutes to equilibrate; measure ~1 m (≈3 ft) above ground; match sun/wind to subjects; back of unit into wind; tripod/vane recommended.</p>
-    </div>
+    <h2>Outputs</h2>
+    <ul>
+      <li>Interactive charts (WBGT, components) for selected sessions.</li>
+      <li>Documented protocol and references (see <code>docs/</code> folder in the repo).</li>
+      <li>Reproducible folder layout for GitHub Pages deployments.</li>
+    </ul>
+
+    <p class="muted">Tip: See <code>docs/protocol.md</code> and <code>docs/references.md</code> for methods and provenance.</p>
   </section>
 
+  <!-- Loaded on demand -->
+  <section id="data" class="panel" hidden></section>
   <section id="steps" class="panel" hidden></section>
   <section id="glossary" class="panel" hidden></section>
-  <!-- NEW: Images panel -->
   <section id="images" class="panel" hidden></section>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-/* --- Tabs --- */
+/* --- Tabs & lazy loading --- */
 const tabs = document.querySelectorAll('.tab');
 const panels = {
   main: document.getElementById('main'),
+  data: document.getElementById('data'),
   steps: document.getElementById('steps'),
   glossary: document.getElementById('glossary'),
-  images: document.getElementById('images') // NEW
+  images: document.getElementById('images')
 };
 
 async function openTab(name){
   tabs.forEach(t => t.classList.toggle('active', t.dataset.tab===name));
   Object.entries(panels).forEach(([k,el]) => el.hidden = (k!==name));
+  if (name==='data' && !panels.data.dataset.loaded){
+    const html = await fetch('html/data.html').then(r=>r.text());
+    panels.data.innerHTML = html;
+    panels.data.dataset.loaded = '1';
+  }
   if (name==='steps' && !panels.steps.dataset.loaded){
     const html = await fetch('html/steps.html').then(r=>r.text());
     panels.steps.innerHTML = html;
@@ -90,68 +98,12 @@ async function openTab(name){
     panels.glossary.dataset.loaded = '1';
   }
   if (name==='images' && !panels.images.dataset.loaded){
-    const html = await fetch('html/images.html').then(r=>r.text()); // NEW
+    const html = await fetch('html/images.html').then(r=>r.text());
     panels.images.innerHTML = html;
     panels.images.dataset.loaded = '1';
   }
 }
 tabs.forEach(btn => btn.addEventListener('click', () => openTab(btn.dataset.tab)));
-
-/* --- CSV -> Chart --- */
-function parseCSV(text){
-  const lines = text.trim().split(/\r?\n/);
-  if (!lines.length) throw new Error('Empty CSV.');
-  const header = lines.shift().split(',').map(h=>h.trim());
-  const idxTime = header.findIndex(h => h.toLowerCase() === 'timestamp');
-  const idxWBGT = header.findIndex(h => /wbgt/i.test(h));
-  if (idxTime === -1 || idxWBGT === -1) {
-    throw new Error('CSV must include columns: timestamp and a WBGT column (name contains "wbgt").');
-  }
-  const labels = [], wbgt = [];
-  for (const line of lines) {
-    if (!line.trim()) continue;
-    const cols = line.split(',').map(c=>c.trim());
-    labels.push(cols[idxTime]);
-    const v = parseFloat(cols[idxWBGT]);
-    wbgt.push(Number.isFinite(v) ? v : null);
-  }
-  return { labels, wbgt };
-}
-
-let chart;
-function renderChart(labels, wbgt){
-  const ctx = document.getElementById('wbgtChart').getContext('2d');
-  if (chart) chart.destroy();
-  chart = new Chart(ctx, {
-    type: 'line',
-    data: { labels, datasets: [{ label: 'WBGT', data: wbgt }] },
-    options: {
-      parsing: false,
-      interaction: { mode: 'nearest', intersect: false },
-      scales: {
-        x: { title: { display: true, text: 'Time' } },
-        y: { title: { display: true, text: 'WBGT' } }
-      }
-    }
-  });
-}
-
-/* File/URL/Paste handlers */
-document.getElementById('csvFile').addEventListener('change', async (e)=>{
-  const f = e.target.files[0]; if (!f) return;
-  const text = await f.text(); const {labels, wbgt} = parseCSV(text); renderChart(labels, wbgt);
-});
-document.getElementById('fetchBtn').addEventListener('click', async ()=>{
-  const url = document.getElementById('csvUrl').value.trim();
-  if (!url) return alert('Enter a CSV URL (e.g., data/run.csv).');
-  const res = await fetch(url); if (!res.ok) return alert('Fetch failed: '+res.status);
-  const text = await res.text(); const {labels, wbgt} = parseCSV(text); renderChart(labels, wbgt);
-});
-document.getElementById('pasteBtn').addEventListener('click', ()=>{
-  const text = document.getElementById('csvText').value.trim();
-  if (!text) return alert('Paste CSV first.');
-  const {labels, wbgt} = parseCSV(text); renderChart(labels, wbgt);
-});
 </script>
 </body>
 </html>
