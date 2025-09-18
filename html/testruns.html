@@ -1,7 +1,5 @@
 <h1>Test Runs with Kestrel</h1>
-<p class="muted">
-  Draft templates for documenting field tests. Edit this file in the repository to record your actual procedures and results.
-</p>
+<p class="muted">Use these empty templates to document your own test runs. Duplicate a template block for each run and replace the placeholders.</p>
 
 <style>
   .muted{color:#666}
@@ -9,175 +7,91 @@
   .card{border:1px solid #e5e5e5;border-radius:12px;padding:14px;background:#fff}
   .card h2{margin-top:0}
   .sub{font-weight:600;margin:10px 0 4px}
-  details{margin-top:8px}
-  summary{cursor:pointer}
   table{width:100%;border-collapse:collapse;margin:6px 0}
   th,td{border:1px solid #e5e5e5;padding:6px;text-align:left;vertical-align:top}
   .small{font-size:0.95rem}
   .check li{margin:4px 0}
   code{background:#f6f6f6;padding:0 4px;border-radius:4px}
+  .tip{background:#fafafa;border:1px dashed #ddd;border-radius:10px;padding:10px;margin:10px 0}
 </style>
 
+<div class="tip small">
+  <strong>Instructions:</strong> Copy the “Test Run Template” card below for each new session. Replace all placeholders (________ / TODO).
+</div>
+
 <div class="grid">
-  <!-- Transit Stop — Baseline Microclimate -->
+
+  <!-- ===================== -->
+  <!-- Test Run Template (duplicate this block per run) -->
+  <!-- ===================== -->
   <article class="card">
-    <h2>Transit Stop — Baseline Microclimate</h2>
-    <div class="sub">Objective</div>
-    <p class="small">Characterize temperature-related indices (WBGT, air temp) and relevant factors (RH, wind, globe temp) for a typical bus stop under real operating conditions.</p>
-    <div class="sub">Site Metadata</div>
+    <h2>Test Run — <em>Title/Identifier</em></h2>
+
+    <div class="sub">Overview</div>
+    <p class="small">Objective: ________</p>
+    <p class="small">Context / Site type (e.g., transit stop, intersection, surface comparison): ________</p>
+
+    <div class="sub">Session Metadata</div>
     <table class="small">
+      <tr><th>Date &amp; Time (local)</th><td>________</td></tr>
       <tr><th>Location</th><td>________</td></tr>
-      <tr><th>Date &amp; time (local)</th><td>________</td></tr>
-      <tr><th>Surface</th><td>Asphalt / Concrete / Grass / Other: ________</td></tr>
-      <tr><th>Solar exposure</th><td>Full sun / Partial / Shade (source: tree/shelter)</td></tr>
-      <tr><th>Nearby heat sources</th><td>Traffic, building exhaust, vehicles idling, etc.</td></tr>
+      <tr><th>Surface / Setting</th><td>________</td></tr>
+      <tr><th>Solar Exposure</th><td>Full sun / Partial / Shade — ________</td></tr>
+      <tr><th>Nearby Heat Sources</th><td>________</td></tr>
+      <tr><th>Photos</th><td><code>images/________.jpg</code></td></tr>
     </table>
+
     <div class="sub">Device Configuration</div>
     <table class="small">
       <tr><th>WBGT Type</th><td>Outdoor / Indoor</td></tr>
-      <tr><th>Zones/Guide</th><td>________</td></tr>
-      <tr><th>Alerts</th><td>Light / Buzzer / Off</td></tr>
-      <tr><th>Logging</th><td>Auto Store = On; Store Rate = __ min; Overwrite = On/Off</td></tr>
+      <tr><th>Zones / Guide</th><td>________</td></tr>
+      <tr><th>Alerts</th><td>Light / Buzzer / Off — ________</td></tr>
+      <tr><th>Logging</th><td>Auto Store = ________; Store Rate = ________ min; Overwrite = On/Off</td></tr>
       <tr><th>Units</th><td>Metric / Imperial</td></tr>
-      <tr><th>Firmware</th><td>v____</td></tr>
+      <tr><th>Firmware</th><td>v________</td></tr>
     </table>
+
     <div class="sub">Setup &amp; Placement</div>
     <ul class="small check">
-      <li>Mount ~1 m (≈3 ft) above ground at rider position.</li>
-      <li>Back of unit oriented into wind; vane/tripod if possible.</li>
-      <li>Stabilization time after move: ~8–15 minutes.</li>
+      <li>Height above ground: ________</li>
+      <li>Orientation (back into wind): ________</li>
+      <li>Mount (handheld / tripod / vane): ________</li>
+      <li>Equilibration time observed: ________</li>
     </ul>
+
     <div class="sub">Procedure</div>
     <ol class="small">
-      <li>Record photo(s) of site and instrument placement.</li>
-      <li>Confirm device config (WBGT type, zones, logging interval).</li>
-      <li>Begin logging; add a <em>Capture</em> mark at start.</li>
-      <li>Remain in steady state for at least N logging intervals.</li>
-      <li>Note sun/cloud changes, bus arrivals, wind shifts (use Capture).</li>
-      <li>End run; add a final <em>Capture</em> mark.</li>
+      <li>Start conditions / Capture markers: ________</li>
+      <li>Measurement blocks (duration / sequence): ________</li>
+      <li>Events to note (clouds, traffic pulses, shade changes): ________</li>
+      <li>End conditions / Capture markers: ________</li>
     </ol>
+
     <div class="sub">Data Files</div>
     <table class="small">
-      <tr><th>CSV path</th><td><code>data/YYYY-MM-DD_busstop_01.csv</code></td></tr>
-      <tr><th>Photos</th><td><code>images/busstop_01_*.jpg</code></td></tr>
-      <tr><th>Notes</th><td>Any edits or column renames performed? ________</td></tr>
+      <tr><th>CSV path</th><td><code>data/________.csv</code></td></tr>
+      <tr><th>Export method</th><td>LiNK app / USB cable — version/details: ________</td></tr>
+      <tr><th>Post-processing</th><td>None / column renames / filters — ________</td></tr>
     </table>
-    <details>
-      <summary>Observations &amp; Preliminary Results</summary>
-      <ul class="small">
-        <li>WBGT range: ________</li>
-        <li>Air temperature range: ________</li>
-        <li>Wind range: ________</li>
-        <li>Notable events (timestamped): ________</li>
-      </ul>
-    </details>
-  </article>
 
-  <!-- Intersection — Crosswalk / Median Dwell -->
-  <article class="card">
-    <h2>Intersection — Crosswalk / Median Dwell</h2>
-    <div class="sub">Objective</div>
-    <p class="small">Compare conditions experienced while waiting at crosswalks/medians versus adjacent shaded areas.</p>
-    <div class="sub">Site Metadata</div>
-    <table class="small">
-      <tr><th>Intersection</th><td>________</td></tr>
-      <tr><th>Control</th><td>Signalized / Stop / Other</td></tr>
-      <tr><th>Median type</th><td>Bare / Planted / With shelter</td></tr>
-      <tr><th>Traffic intensity</th><td>Low / Medium / High (notes)</td></tr>
-    </table>
-    <div class="sub">Design</div>
-    <ul class="small check">
-      <li>Paired spots: <em>dwell area</em> (sun) vs <em>shade control</em>.</li>
-      <li>Alternate measurements in matched time blocks.</li>
-      <li>Keep height/orientation identical across spots.</li>
-    </ul>
-    <div class="sub">Procedure</div>
-    <ol class="small">
-      <li>Stabilize; start in sun location (Capture mark).</li>
-      <li>Log N intervals; note traffic pulses or bus arrivals.</li>
-      <li>Move to shade control; stabilize; log N intervals.</li>
-      <li>Repeat sequence if time permits.</li>
-    </ol>
-    <details>
-      <summary>Expected Outputs</summary>
-      <ul class="small">
-        <li>Delta WBGT (sun − shade).</li>
-        <li>Component contributions: ΔTg (radiation), Δv (wind), ΔRH.</li>
-        <li>Photos annotated with positions.</li>
-      </ul>
-    </details>
-  </article>
-
-  <!-- Surface Comparison — Asphalt vs Grass -->
-  <article class="card">
-    <h2>Surface Comparison — Asphalt vs Grass</h2>
-    <div class="sub">Objective</div>
-    <p class="small">Quantify how surface type influences WBGT and components under similar meteorological conditions.</p>
-    <div class="sub">Design &amp; Procedure</div>
-    <ul class="small check">
-      <li>Two adjacent sites at same height/exposure: asphalt and grass.</li>
-      <li>Alternate in 10–15 min blocks; stabilize after each move.</li>
-      <li>Use <em>Capture</em> at each move and any cloud cover change.</li>
-    </ul>
-    <div class="sub">Key Metrics</div>
+    <div class="sub">Key Metrics (to summarize later)</div>
     <ul class="small">
-      <li>ΔWBGT, ΔTg, ΔTa; note wind differences.</li>
-      <li>Photograph surfaces and sky conditions.</li>
+      <li>WBGT range: ________</li>
+      <li>Air temperature (Ta) range: ________</li>
+      <li>Globe temperature (Tg) range: ________</li>
+      <li>Natural wet-bulb (Tnwb) range: ________</li>
+      <li>Wind (v) / RH (%) ranges: ________</li>
     </ul>
-  </article>
 
-  <!-- Intervention — Shelter / Shade / Mister -->
-  <article class="card">
-    <h2>Intervention — Shelter / Shade / Mister</h2>
-    <div class="sub">Objective</div>
-    <p class="small">Estimate change in WBGT and components after adding or using an intervention (e.g., bus shelter, shade sail, mister).</p>
-    <div class="sub">Procedure</div>
-    <ol class="small">
-      <li>Baseline measurement (no intervention active).</li>
-      <li>Activate intervention; wait to stabilize; measure again.</li>
-      <li>Repeat if feasible to average out transient effects.</li>
-    </ol>
-    <div class="sub">Record</div>
-    <table class="small">
-      <tr><th>Intervention details</th><td>Type, dimensions, materials, location.</td></tr>
-      <tr><th>Activation time</th><td>________</td></tr>
-      <tr><th>Measured effect</th><td>ΔWBGT, ΔTg, Δv, qualitative comfort notes.</td></tr>
-    </table>
-  </article>
+    <div class="sub">Observations</div>
+    <p class="small">Notes on conditions, anomalies, and anything notable: ________</p>
 
-  <!-- Wind Exposure — Orientation Sensitivity -->
-  <article class="card">
-    <h2>Wind Exposure — Orientation Sensitivity</h2>
-    <div class="sub">Objective</div>
-    <p class="small">Check the effect of orientation and shielding on readings, ensuring placement reflects people’s exposure.</p>
-    <div class="sub">Procedure</div>
-    <ul class="small check">
-      <li>Compare open exposure vs. near-wall/vehicle shielding.</li>
-      <li>Log at least N intervals in each; maintain height.</li>
-      <li>Note gusts; use <em>Capture</em> during obvious wind shifts.</li>
-    </ul>
-  </article>
-
-  <!-- External Validation (optional) -->
-  <article class="card">
-    <h2>External Validation — Reference Comparison</h2>
-    <div class="sub">Objective</div>
-    <p class="small">Compare your readings to a nearby reference (e.g., mesonet station, airport METAR) acknowledging siting differences.</p>
-    <div class="sub">Procedure</div>
-    <ul class="small check">
-      <li>Match time windows; record reference data source and timestamps.</li>
-      <li>Compare Ta, RH, wind; discuss reasons for expected differences.</li>
-    </ul>
-  </article>
-
-  <!-- Shared notes -->
-  <article class="card">
-    <h2>Notes &amp; Issues (Shared)</h2>
+    <div class="sub">Issues &amp; Follow-ups</div>
     <ul class="small">
-      <li>Sensor equilibration time observed: ________</li>
-      <li>Data gaps or anomalies: ________</li>
-      <li>CSV column checks / renames: ________</li>
-      <li>Safety/ethics (e.g., privacy for photos): ________</li>
+      <li>Data gaps / sensor issues: ________</li>
+      <li>Protocol adjustments to try next time: ________</li>
+      <li>Additional images or references to add: ________</li>
     </ul>
   </article>
+
 </div>
