@@ -1,0 +1,98 @@
+<h1>Data: Upload, Fetch, or Paste CSV</h1>
+<p class="muted">Load a CSV exported from Kestrel LiNK (or paste CSV) and render WBGT over time. CSV must include <code>timestamp</code> and at least one column whose name contains <code>wbgt</code>.</p>
+
+<style>
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  input,button,textarea{padding:6px 10px;border:1px solid #d0d0d0;border-radius:8px}
+  textarea{width:100%;height:160px}
+  canvas{max-width:100%;height:auto}
+  .muted{color:#666}
+  .card{border:1px solid #e5e5e5;border-radius:10px;padding:12px;margin:10px 0}
+</style>
+
+<div class="card">
+  <h2>Load Data</h2>
+  <div class="row" style="margin:8px 0 16px">
+    <div>
+      <label for="csvFile">From your computer</label><br>
+      <input type="file" id="csvFile" accept=".csv">
+    </div>
+    <div>
+      <label for="csvUrl">…or fetch by URL (e.g., <code>data/run.csv</code>)</label><br>
+      <input id="csvUrl" placeholder="data/session_sample.csv" style="min-width:280px">
+      <button id="fetchBtn">Fetch</button>
+    </div>
+  </div>
+
+  <details>
+    <summary>…or paste CSV</summary>
+    <textarea id="csvText"></textarea>
+    <div style="margin-top:8px">
+      <button id="pasteBtn">Render pasted CSV</button>
+    </div>
+  </details>
+</div>
+
+<div class="card">
+  <h2>WBGT Chart</h2>
+  <canvas id="wbgtChart" width="960" height="420" aria-label="WBGT chart"></canvas>
+  <p class="muted">Field protocol: allow 8–15 minutes to equilibrate; measure ~1 m (≈3 ft) above ground; match sun/wind to subjects; back of unit into wind; tripod/vane recommended.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+function parseCSV(text){
+  const lines = text.trim().split(/\r?\n/);
+  if (!lines.length) throw new Error('Empty CSV.');
+  const header = lines.shift().split(',').map(h=>h.trim());
+  const idxTime = header.findIndex(h => h.toLowerCase() === 'timestamp');
+  const idxWBGT = header.findIndex(h => /wbgt/i.test(h));
+  if (idxTime === -1 || idxWBGT === -1) {
+    throw new Error('CSV must include columns: timestamp and a WBGT column (name contains "wbgt").');
+  }
+  const labels = [], wbgt = [];
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    const cols = line.split(',').map(c=>c.trim());
+    labels.push(cols[idxTime]);
+    const v = parseFloat(cols[idxWBGT]);
+    wbgt.push(Number.isFinite(v) ? v : null);
+  }
+  return { labels, wbgt };
+}
+
+let chart;
+function renderChart(labels, wbgt){
+  const ctx = document.getElementById('wbgtChart').getContext('2d');
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets: [{ label: 'WBGT', data: wbgt }] },
+    options: {
+      parsing: false,
+      interaction: { mode: 'nearest', intersect: false },
+      scales: {
+        x: { title: { display: true, text: 'Time' } },
+        y: { title: { display: true, text: 'WBGT' } }
+      }
+    }
+  });
+}
+
+/* File/URL/Paste handlers */
+document.getElementById('csvFile').addEventListener('change', async (e)=>{
+  const f = e.target.files[0]; if (!f) return;
+  const text = await f.text(); const {labels, wbgt} = parseCSV(text); renderChart(labels, wbgt);
+});
+document.getElementById('fetchBtn').addEventListener('click', async ()=>{
+  const url = document.getElementById('csvUrl').value.trim();
+  if (!url) return alert('Enter a CSV URL (e.g., data/run.csv).');
+  const res = await fetch(url); if (!res.ok) return alert('Fetch failed: '+res.status);
+  const text = await res.text(); const {labels, wbgt} = parseCSV(text); renderChart(labels, wbgt);
+});
+document.getElementById('pasteBtn').addEventListener('click', ()=>{
+  const text = document.getElementById('csvText').value.trim();
+  if (!text) return alert('Paste CSV first.');
+  const {labels, wbgt} = parseCSV(text); renderChart(labels, wbgt);
+});
+</script>
