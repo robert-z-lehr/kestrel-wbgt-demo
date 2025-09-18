@@ -8,7 +8,7 @@
   :root { --pad: 16px; --border:#e5e5e5; }
   body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:var(--pad);line-height:1.5}
   main{max-width:1000px;margin:auto}
-  .tabs{display:flex;gap:8px;border-bottom:1px solid var(--border);margin-bottom:12px}
+  .tabs{display:flex;gap:8px;border-bottom:1px solid var(--border);margin-bottom:12px;flex-wrap:wrap}
   .tab{padding:8px 12px;border:1px solid var(--border);border-bottom:none;border-top-left-radius:10px;border-top-right-radius:10px;background:#fafafa;cursor:pointer}
   .tab.active{background:#fff;font-weight:600}
   .panel{border:1px solid var(--border);border-radius:10px;padding:16px}
@@ -25,6 +25,8 @@
     <button class="tab active" data-tab="main">Main</button>
     <button class="tab" data-tab="steps">How-To Steps</button>
     <button class="tab" data-tab="glossary">Glossary</button>
+    <!-- NEW: Images tab -->
+    <button class="tab" data-tab="images">Images</button>
   </nav>
 
   <section id="main" class="panel">
@@ -59,29 +61,39 @@
 
   <section id="steps" class="panel" hidden></section>
   <section id="glossary" class="panel" hidden></section>
+  <!-- NEW: Images panel -->
+  <section id="images" class="panel" hidden></section>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 /* --- Tabs --- */
 const tabs = document.querySelectorAll('.tab');
-const panels = { main: document.getElementById('main'),
-                 steps: document.getElementById('steps'),
-                 glossary: document.getElementById('glossary') };
+const panels = {
+  main: document.getElementById('main'),
+  steps: document.getElementById('steps'),
+  glossary: document.getElementById('glossary'),
+  images: document.getElementById('images') // NEW
+};
 
 async function openTab(name){
   tabs.forEach(t => t.classList.toggle('active', t.dataset.tab===name));
   Object.entries(panels).forEach(([k,el]) => el.hidden = (k!==name));
   if (name==='steps' && !panels.steps.dataset.loaded){
-  const html = await fetch('html/steps.html').then(r=>r.text());
-  panels.steps.innerHTML = html;
-  panels.steps.dataset.loaded = '1';
-}
-if (name==='glossary' && !panels.glossary.dataset.loaded){
-  const html = await fetch('html/glossary.html').then(r=>r.text());
-  panels.glossary.innerHTML = html;
-  panels.glossary.dataset.loaded = '1';
-}
+    const html = await fetch('html/steps.html').then(r=>r.text());
+    panels.steps.innerHTML = html;
+    panels.steps.dataset.loaded = '1';
+  }
+  if (name==='glossary' && !panels.glossary.dataset.loaded){
+    const html = await fetch('html/glossary.html').then(r=>r.text());
+    panels.glossary.innerHTML = html;
+    panels.glossary.dataset.loaded = '1';
+  }
+  if (name==='images' && !panels.images.dataset.loaded){
+    const html = await fetch('html/images.html').then(r=>r.text()); // NEW
+    panels.images.innerHTML = html;
+    panels.images.dataset.loaded = '1';
+  }
 }
 tabs.forEach(btn => btn.addEventListener('click', () => openTab(btn.dataset.tab)));
 
