@@ -1,30 +1,122 @@
 <h1>Glossary & Calculation Notes</h1>
+<p class="muted">Highlighted items (<mark>like this</mark>) are direct temperature measurements or temperatures derived from sensors.</p>
 
-<h2>WBGT (Wet-Bulb Globe Temperature)</h2>
-<p>Composite index of environmental heat stress combining natural wet-bulb temperature (humidity + evaporative potential), black globe temperature (solar and radiant heat), and air temperature. Two standard formulas are used:</p>
+<hr>
+
+<h2>WBGT — Wet-Bulb Globe Temperature</h2>
+<p>
+  An environmental heat-stress index combining the effects of humidity/evaporation, radiant load, and air temperature. Widely used in occupational safety (NIOSH/OSHA/ACGIH), athletics, and military guidance to set work-rest cycles and hydration plans.
+</p>
 <ul>
-  <li><strong>Outdoors with solar load</strong>: WBGT = 0.7·T<sub>nwb</sub> + 0.2·T<sub>g</sub> + 0.1·T<sub>a</sub></li>
-  <li><strong>Indoors or outdoors without solar load</strong>: WBGT = 0.7·T<sub>nwb</sub> + 0.3·T<sub>g</sub></li>
+  <li><strong>Outdoors with solar load:</strong> WBGT = 0.7·T<sub>nwb</sub> + 0.2·T<sub>g</sub> + 0.1·T<sub>a</sub></li>
+  <li><strong>Indoors or outdoors without solar load:</strong> WBGT = 0.7·T<sub>nwb</sub> + 0.3·T<sub>g</sub></li>
 </ul>
+<p class="muted">Use cases: occupational heat limits (ACGIH TLVs, NIOSH), event safety thresholds, training adjustments.</p>
 
-<h2>T<sub>nwb</sub> — Natural Wet-Bulb Temperature</h2>
-<p>Represents the effect of humidity and airflow on evaporative cooling. On many electronic meters it is derived from humidity and temperature sensors via psychrometric relationships.</p>
+<hr>
 
-<h2>T<sub>g</sub> — Black Globe Temperature</h2>
-<p>Temperature of a thermometer inside a matte black globe (standard WBGT globe is 150&nbsp;mm) that responds to radiant heat (e.g., sunlight) and airflow.</p>
+<h2><mark>T<sub>a</sub> — Dry-Bulb (Air) Temperature</mark></h2>
+<p>
+  The ambient air temperature measured in moving air, shielded from direct solar radiation.
+</p>
+<p class="muted">Use cases: baseline meteorological temperature; inputs to WBGT, Heat Index, UTCI, dew point, RH.</p>
 
-<h2>T<sub>a</sub> — Dry-Bulb (Air) Temperature</h2>
-<p>Ambient air temperature measured in moving air, shielded from direct solar radiation.</p>
+<h2><mark>T<sub>nwb</sub> — Natural Wet-Bulb Temperature</mark></h2>
+<p>
+  The wet-bulb temperature measured without forced airflow (natural ventilation). It reflects the combined effects of humidity and airflow on evaporative cooling. On electronic meters it is derived by psychrometric computation from temperature/humidity sensors.
+</p>
+<p class="muted">Use cases: primary humidity/evaporation component in WBGT.</p>
 
-<h2>Heat Index</h2>
-<p>An apparent temperature metric combining air temperature and relative humidity; differs conceptually from WBGT and is not directly comparable for work/rest planning.</p>
+<h2><mark>T<sub>wb</sub> — Psychrometric (Ventilated) Wet-Bulb Temperature</mark></h2>
+<p>
+  The temperature indicated by a wetted sensor under adequate, forced airflow (e.g., sling or aspirated psychrometer). Formally, the adiabatic saturation temperature under standard conditions.
+</p>
+<p class="muted">Use cases: psychrometric calculations; derivation of RH/dew point; not used directly in WBGT (which uses T<sub>nwb</sub>), but conceptually related.</p>
 
-<h2>TWL (Thermal Work Limit)</h2>
-<p>Estimate of the body’s cooling capacity (W/m²) under current conditions; used to guide operational categories such as Unrestricted, Acclimatization, Buffer, and Withdraw.</p>
+<h2><mark>T<sub>g</sub> — Black Globe Temperature</mark></h2>
+<p>
+  Temperature measured by a sensor centered in a matte black globe (standard WBGT globe diameter 150 mm). Responds to radiant heat (sun/infrared) and convection.
+</p>
+<p class="muted">Use cases: radiant load component in WBGT; proxy for mean radiant temperature when combined with wind and air temperature.</p>
 
-<h2>Operational Notes (from device guidance)</h2>
+<h2><mark>T<sub>mrt</sub> — Mean Radiant Temperature</mark></h2>
+<p>
+  The uniform temperature of an imaginary enclosure that would result in the same net radiant heat exchange with a person as the actual environment. Often estimated from <em>T<sub>g</sub></em>, air speed <em>v</em>, globe diameter <em>D</em>, and emissivity <em>ε</em>.
+</p>
+<details>
+  <summary>Common ISO 7726 relation (forced convection)</summary>
+  <pre>MRT = [ (Tg+273.15)^4 + (2.5×10^8) · v^0.6 · (Tg − Ta) ]^0.25 − 273.15   (for D=0.150 m, ε≈0.95)</pre>
+</details>
+<p class="muted">Use cases: thermal comfort modeling; understanding radiant load beyond WBGT.</p>
+
+<hr>
+
+<h2>Relative Humidity (RH)</h2>
+<p>
+  Ratio (×100%) of the actual water vapor partial pressure to the saturation vapor pressure at the same temperature.
+</p>
+<p class="muted">Use cases: inputs to wet-bulb/dew point estimates, Heat Index, UTCI; affects sweat evaporation.</p>
+
+<h2><mark>Dew Point Temperature (T<sub>d</sub>)</mark></h2>
+<p>
+  The temperature to which air must be cooled (at constant pressure and water content) to reach saturation (RH = 100%). Approximate “Magnus” form:
+</p>
+<pre>Td ≈ (b·γ)/(a − γ),  where  γ = ln(RH/100) + a·Ta/(b + Ta),  a=17.62, b=243.12°C</pre>
+<p class="muted">Use cases: comfort/condensation risk; alternative humidity descriptor; useful cross-check for sensor quality.</p>
+
+<h2>Vapor Pressure (e), Saturation Vapor Pressure (e<sub>s</sub>)</h2>
+<p>
+  <em>e</em> is the partial pressure of water vapor; <em>e<sub>s</sub></em> is the maximum possible at a given temperature. RH = 100·e/e<sub>s</sub>. Many implementations use a Tetens-type approximation for e<sub>s</sub>(T).
+</p>
+
+<hr>
+
+<h2>Heat Index (HI)</h2>
+<p>
+  An apparent temperature combining dry-bulb temperature and RH for shaded, light-wind conditions (U.S. NWS). Not directly comparable to WBGT but useful for public heat messaging.
+</p>
+<details>
+  <summary>NOAA (Rothfusz) regression (T in °F, RH in %)</summary>
+  <pre>HI = −42.379 + 2.04901523T + 10.14333127RH − 0.22475541T·RH
+     − 0.00683783T² − 0.05481717RH² + 0.00122874T²·RH
+     + 0.00085282T·RH² − 0.00000199T²·RH²</pre>
+</details>
+<p class="muted">Use cases: public advisories; communications. WBGT is preferred for occupational control.</p>
+
+<h2>UTCI — Universal Thermal Climate Index</h2>
+<p>
+  An equivalent temperature derived from a detailed thermo-physiological model that accounts for air temperature, wind, humidity, and radiation with clothing adaptation. More comprehensive than HI; heavier to compute.
+</p>
+<p class="muted">Use cases: outdoor comfort/health assessments, research, urban planning.</p>
+
+<h2>TWL — Thermal Work Limit</h2>
+<p>
+  An estimate of maximum sustainable metabolic rate (W/m²) in given conditions. Used to categorize work settings (e.g., Unrestricted, Acclimatization, Buffer, Withdraw) and guide operational decisions.
+</p>
+
+<hr>
+
+<h2>Air Speed (Wind) — v</h2>
+<p>
+  Flow speed at measurement height. Influences evaporative cooling (wet-bulb) and the relation between globe temperature and mean radiant temperature.
+</p>
+
+<h2>Solar/Shortwave & Longwave Radiation</h2>
+<p>
+  Radiative inputs that drive <em>T<sub>g</sub></em> and thermal load. Surface properties (e.g., bright concrete vs. dark asphalt) change absorbed radiation (albedo), affecting local heat stress.
+</p>
+
+<h2>Clothing & Metabolic Rate</h2>
+<p>
+  Clothing modifies heat exchange (insulation/evaporative resistance); metabolic rate (W or METs) determines internal heat production. Occupational/athletic guidelines adjust thresholds for both.
+</p>
+
+<hr>
+
+<h2>Operational Notes</h2>
 <ul>
-  <li>Allow 8–15 minutes after changing environments for sensors to stabilize.</li>
-  <li>Measure ~1&nbsp;m (~3&nbsp;ft) above ground in the same sun/wind as the people being monitored; point the back of the unit into the wind; tripod/vane improves accuracy.</li>
-  <li>Ground surface (grass vs. asphalt) and radiation conditions affect readings—match your team’s setting.</li>
+  <li>Allow sensors to equilibrate after environment changes (≈8–15 min).</li>
+  <li>Measure ≈1 m (≈3 ft) above ground, matching subjects’ sun/wind.</li>
+  <li>Orient the instrument’s back into the wind; vane/tripod improves exposure.</li>
+  <li>Surface type and radiation (shade/sun) materially affect readings.</li>
 </ul>
