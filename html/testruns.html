@@ -1,97 +1,62 @@
 <h1>Test Runs with Kestrel</h1>
-<p class="muted">Use these empty templates to document your own test runs. Duplicate a template block for each run and replace the placeholders.</p>
+<p class="muted">Duplicate the template below for each run and fill in the blanks.</p>
 
 <style>
   .muted{color:#666}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
-  .card{border:1px solid #e5e5e5;border-radius:12px;padding:14px;background:#fff}
-  .card h2{margin-top:0}
-  .sub{font-weight:600;margin:10px 0 4px}
-  table{width:100%;border-collapse:collapse;margin:6px 0}
-  th,td{border:1px solid #e5e5e5;padding:6px;text-align:left;vertical-align:top}
-  .small{font-size:0.95rem}
-  .check li{margin:4px 0}
-  code{background:#f6f6f6;padding:0 4px;border-radius:4px}
-  .tip{background:#fafafa;border:1px dashed #ddd;border-radius:10px;padding:10px;margin:10px 0}
+  .card{border:1px solid #e5e5e5;border-radius:12px;padding:12px;margin:12px 0;background:#fff}
+  .card h2{margin:0 0 8px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .row > div{flex:1 1 220px}
+  textarea,input{width:100%;padding:6px;border:1px solid #d0d0d0;border-radius:8px}
+  textarea{min-height:80px}
+  label{font-size:0.9rem;color:#444}
 </style>
 
-<div class="tip small">
-  <strong>Instructions:</strong> Copy the “Test Run Template” card below for each new session. Replace all placeholders (________ / TODO).
-</div>
+<!-- ===== Copy from here for each new run ===== -->
+<article class="card">
+  <h2>Test Run — <em>Title</em></h2>
 
-<div class="grid">
+  <div class="row">
+    <div>
+      <label>Date &amp; Time</label>
+      <input placeholder="YYYY-MM-DD, local time window">
+    </div>
+    <div>
+      <label>Location</label>
+      <input placeholder="Site / coordinates / notes">
+    </div>
+  </div>
 
-  <!-- ===================== -->
-  <!-- Test Run Template (duplicate this block per run) -->
-  <!-- ===================== -->
-  <article class="card">
-    <h2>Test Run — <em>Title/Identifier</em></h2>
+  <div class="row">
+    <div>
+      <label>Objective</label>
+      <textarea placeholder="What are you trying to learn?"></textarea>
+    </div>
+    <div>
+      <label>Setup</label>
+      <textarea placeholder="Height ~1 m, WBGT type, logging rate, mount, orientation"></textarea>
+    </div>
+  </div>
 
-    <div class="sub">Overview</div>
-    <p class="small">Objective: ________</p>
-    <p class="small">Context / Site type (e.g., transit stop, intersection, surface comparison): ________</p>
+  <div>
+    <label>Procedure</label>
+    <textarea placeholder="Simple steps you followed (start, stabilize, log, stop)"></textarea>
+  </div>
 
-    <div class="sub">Session Metadata</div>
-    <table class="small">
-      <tr><th>Date &amp; Time (local)</th><td>________</td></tr>
-      <tr><th>Location</th><td>________</td></tr>
-      <tr><th>Surface / Setting</th><td>________</td></tr>
-      <tr><th>Solar Exposure</th><td>Full sun / Partial / Shade — ________</td></tr>
-      <tr><th>Nearby Heat Sources</th><td>________</td></tr>
-      <tr><th>Photos</th><td><code>images/________.jpg</code></td></tr>
-    </table>
+  <div class="row">
+    <div>
+      <label>Data File</label>
+      <input placeholder="data/your-run.csv">
+    </div>
+    <div>
+      <label>Photos</label>
+      <input placeholder="images/your-photos-*.jpg">
+    </div>
+  </div>
 
-    <div class="sub">Device Configuration</div>
-    <table class="small">
-      <tr><th>WBGT Type</th><td>Outdoor / Indoor</td></tr>
-      <tr><th>Zones / Guide</th><td>________</td></tr>
-      <tr><th>Alerts</th><td>Light / Buzzer / Off — ________</td></tr>
-      <tr><th>Logging</th><td>Auto Store = ________; Store Rate = ________ min; Overwrite = On/Off</td></tr>
-      <tr><th>Units</th><td>Metric / Imperial</td></tr>
-      <tr><th>Firmware</th><td>v________</td></tr>
-    </table>
-
-    <div class="sub">Setup &amp; Placement</div>
-    <ul class="small check">
-      <li>Height above ground: ________</li>
-      <li>Orientation (back into wind): ________</li>
-      <li>Mount (handheld / tripod / vane): ________</li>
-      <li>Equilibration time observed: ________</li>
-    </ul>
-
-    <div class="sub">Procedure</div>
-    <ol class="small">
-      <li>Start conditions / Capture markers: ________</li>
-      <li>Measurement blocks (duration / sequence): ________</li>
-      <li>Events to note (clouds, traffic pulses, shade changes): ________</li>
-      <li>End conditions / Capture markers: ________</li>
-    </ol>
-
-    <div class="sub">Data Files</div>
-    <table class="small">
-      <tr><th>CSV path</th><td><code>data/________.csv</code></td></tr>
-      <tr><th>Export method</th><td>LiNK app / USB cable — version/details: ________</td></tr>
-      <tr><th>Post-processing</th><td>None / column renames / filters — ________</td></tr>
-    </table>
-
-    <div class="sub">Key Metrics (to summarize later)</div>
-    <ul class="small">
-      <li>WBGT range: ________</li>
-      <li>Air temperature (Ta) range: ________</li>
-      <li>Globe temperature (Tg) range: ________</li>
-      <li>Natural wet-bulb (Tnwb) range: ________</li>
-      <li>Wind (v) / RH (%) ranges: ________</li>
-    </ul>
-
-    <div class="sub">Observations</div>
-    <p class="small">Notes on conditions, anomalies, and anything notable: ________</p>
-
-    <div class="sub">Issues &amp; Follow-ups</div>
-    <ul class="small">
-      <li>Data gaps / sensor issues: ________</li>
-      <li>Protocol adjustments to try next time: ________</li>
-      <li>Additional images or references to add: ________</li>
-    </ul>
-  </article>
-
-</div>
+  <div>
+    <label>Notes</label>
+    <textarea placeholder="Observations, issues, next steps"></textarea>
+  </div>
+</article>
+<!-- ===== Copy until here ===== -->
