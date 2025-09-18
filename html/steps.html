@@ -60,17 +60,38 @@
 <hr>
 
 <h2>Official User Guide</h2>
-<p class="muted">
-  For full details, consult the manufacturer’s manual. To avoid redistribution issues, this link points to the official source.
-</p>
-<p>
+<p class="muted">This viewer loads the manual directly from Kestrel’s server (nothing is hosted here). If their site blocks embedding, a plain link is shown.</p>
+
+<!-- Collapsible viewer to keep the page tidy -->
+<details>
+  <summary>Show the Kestrel 5400 User Guide (PDF)</summary>
+  <div style="margin-top:10px;border:1px solid #e5e5e5;border-radius:10px;overflow:hidden">
+    <object
+      data="https://kestrelinstruments.com/mwdownloads/download/link/id/14/#page=1&zoom=page-width"
+      type="application/pdf"
+      width="100%"
+      height="820">
+      <p>Your browser or the source site won’t display the PDF inline.
+        <a href="https://kestrelinstruments.com/mwdownloads/download/link/id/14/" target="_blank" rel="noopener">
+          Open the PDF in a new tab
+        </a>.
+      </p>
+    </object>
+  </div>
+</details>
+
+<p style="margin-top:10px">
+  Or open it directly:
   <a href="https://kestrelinstruments.com/mwdownloads/download/link/id/14/" target="_blank" rel="noopener">
     Open the Kestrel 5400 User Guide (PDF)
   </a>
 </p>
 
 <!--
-If you later obtain permission and host a local copy at /docs/kestrel-5400-user-guide.pdf,
-you can change the link above to "../docs/kestrel-5400-user-guide.pdf".
-You can also embed it with <object> if desired.
+Notes:
+- This embeds the PDF from Kestrel’s site (hotlink). You are not redistributing the file.
+- If Kestrel’s server sets headers like X-Frame-Options or CSP to block embedding,
+  users will still have the direct link above.
+- If you later obtain permission to host the PDF locally (e.g., /docs/kestrel-5400-user-guide.pdf),
+  you can replace the URLs accordingly.
 -->
