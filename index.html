@@ -24,6 +24,7 @@
     <button class="tab" data-tab="steps">How-To Steps</button>
     <button class="tab" data-tab="glossary">Glossary</button>
     <button class="tab" data-tab="images">Images</button>
+    <button class="tab" data-tab="testruns">Test Runs with Kestrel</button>
   </nav>
 
   <!-- Main: high-level project overview -->
@@ -55,7 +56,8 @@
       <span class="pill">Data</span> Upload or fetch your CSV and render charts.<br>
       <span class="pill">How-To Steps</span> Field checklist based on the user guide (plus link to the full manual).<br>
       <span class="pill">Glossary</span> Definitions, formulas, and how each variable is used.<br>
-      <span class="pill">Images</span> Site photos, device setup, and an example SVG illustration.
+      <span class="pill">Images</span> Site photos, device setup, and an example SVG illustration.<br>
+      <span class="pill">Test Runs with Kestrel</span> Templates to document your field procedures and results.
     </p>
 
     <h2>Outputs</h2>
@@ -73,6 +75,7 @@
   <section id="steps" class="panel" hidden></section>
   <section id="glossary" class="panel" hidden></section>
   <section id="images" class="panel" hidden></section>
+  <section id="testruns" class="panel" hidden></section>
 </main>
 
 <script>
@@ -83,7 +86,8 @@ const panels = {
   data: document.getElementById('data'),
   steps: document.getElementById('steps'),
   glossary: document.getElementById('glossary'),
-  images: document.getElementById('images')
+  images: document.getElementById('images'),
+  testruns: document.getElementById('testruns')
 };
 
 async function openTab(name){
@@ -108,6 +112,11 @@ async function openTab(name){
     const html = await fetch('html/images.html').then(r=>r.text());
     panels.images.innerHTML = html;
     panels.images.dataset.loaded = '1';
+  }
+  if (name==='testruns' && !panels.testruns.dataset.loaded){
+    const html = await fetch('html/testruns.html').then(r=>r.text());
+    panels.testruns.innerHTML = html;
+    panels.testruns.dataset.loaded = '1';
   }
 }
 tabs.forEach(btn => btn.addEventListener('click', () => openTab(btn.dataset.tab)));
