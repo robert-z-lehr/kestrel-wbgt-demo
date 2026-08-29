@@ -3,123 +3,154 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kestrel 5400 WBGT/TWL Demo</title>
+<meta name="description" content="Actionable field protocol for pedestrian heat, shade, and behavior observations at signalized intersections using Kestrel 5400 sensors.">
+<title>Intersection Heat Field Protocol</title>
 <style>
-  :root { --pad: 16px; --border:#e5e5e5; }
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:var(--pad);line-height:1.5}
-  main{max-width:1000px;margin:auto}
-  .tabs{display:flex;gap:8px;border-bottom:1px solid var(--border);margin-bottom:12px;flex-wrap:wrap}
-  .tab{padding:8px 12px;border:1px solid var(--border);border-bottom:none;border-top-left-radius:10px;border-top-right-radius:10px;background:#fafafa;cursor:pointer}
-  .tab.active{background:#fff;font-weight:600}
-  .panel{border:1px solid var(--border);border-radius:10px;padding:16px}
-  .muted{color:#666}
-  .pill{display:inline-block;padding:4px 10px;border:1px solid var(--border);border-radius:999px;background:#fafafa;margin-right:6px}
+:root{--ink:#171717;--muted:#666;--line:#d6d6d1;--soft:#f5f5f2;--paper:#fff;--accent:#315f52;--bg:#ecece8;color-scheme:light}
+*{box-sizing:border-box}html{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}body{margin:0}button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.app-header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line)}.header-row{max-width:1100px;margin:auto;padding:12px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.brand{font-weight:800;margin-right:auto}.tabs,.tools{display:flex;gap:6px;flex-wrap:wrap}.tab-btn,.tool-btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 11px;font-size:14px}.tab-btn.active{background:var(--ink);color:#fff;border-color:var(--ink)}.tool-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}main{max-width:1100px;margin:auto;padding:22px 16px 48px}.panel{display:none;background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px;box-shadow:0 4px 18px rgba(0,0,0,.04)}.panel.active{display:block}h1{font-size:28px;line-height:1.1;margin:0 0 8px}h2{font-size:18px;margin:22px 0 8px}h3{font-size:14px;margin:14px 0 6px}.lede{font-size:16px;max-width:850px}.muted{color:var(--muted)}.callout{border-left:4px solid var(--accent);background:var(--soft);padding:12px 14px;border-radius:7px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{border:1px solid var(--line);border-radius:9px;padding:12px}.card h3{margin-top:0}.compact{margin:7px 0;padding-left:20px}.compact li+li{margin-top:4px}.flow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.pill{border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:5px 9px;font-size:13px}.arrow{color:var(--muted)}code{background:var(--soft);padding:2px 5px;border-radius:4px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;table-layout:fixed}th,td{border:1px solid var(--line);padding:7px;vertical-align:top}th{background:var(--soft);font-size:11px;text-transform:uppercase;letter-spacing:.04em;text-align:left}td{font-size:13px}.small{font-size:12px}.checklist{list-style:none;padding:0;margin:8px 0}.checklist li{margin:6px 0}.checklist input{margin-right:8px}.sheet{width:min(11in,100%);margin:0 auto 18px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:.32in}.sheet-head{display:flex;align-items:flex-end;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:10px}.sheet-head h1{font-size:22px}.sheet-head p{font-size:11px;margin:3px 0 0;color:var(--muted)}.field-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}.field{display:flex;flex-direction:column;gap:3px;min-width:0}.field label,.mini-label{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:700}input[type=text],input[type=date],input[type=time],textarea,select{width:100%;min-width:0;border:1px solid var(--line);border-radius:5px;background:#fff;padding:5px 6px}textarea{resize:vertical;min-height:45px}.corner-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:9px}.corner{border:1px solid var(--line);border-radius:7px;padding:8px}.corner h3{margin:0 0 6px}.corner .field-grid{grid-template-columns:repeat(4,1fr)}.corner textarea{min-height:34px}.print-section{margin-top:9px}.print-section h2{font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin:0 0 5px}.print-table th,.print-table td{padding:4px;font-size:9px}.print-table input{border:0;padding:2px;border-radius:0;background:transparent}.guide-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.guide-item{border:1px solid var(--line);border-radius:7px;padding:8px;font-size:11px}.guide-item strong{display:block;margin-bottom:2px}.print-note{font-size:10px;color:var(--muted)}
+@media(max-width:760px){.brand{width:100%}.panel{padding:16px}.grid,.corner-grid,.guide-grid{grid-template-columns:1fr}.field-grid,.corner .field-grid{grid-template-columns:repeat(2,1fr)}.sheet{padding:16px}.sheet-head{align-items:flex-start;flex-direction:column}.tabs{overflow-x:auto;flex-wrap:nowrap;width:100%;padding-bottom:2px}.tab-btn{white-space:nowrap}.tools{width:100%}}
+@page{size:letter landscape;margin:.28in}
+@media print{html,body{background:#fff!important}.app-header{display:none!important}main{padding:0!important;max-width:none!important}.panel{display:none!important;border:0!important;box-shadow:none!important;padding:0!important}.panel.print-target{display:block!important}.sheet{width:auto!important;min-height:0!important;margin:0!important;padding:.08in!important;border:0!important;border-radius:0!important;box-shadow:none!important;page-break-after:always}.sheet:last-child{page-break-after:auto}.sheet-head{margin-bottom:6px;padding-bottom:5px}.sheet-head h1{font-size:18px}.field-grid{gap:4px}.corner-grid{gap:5px}.corner{padding:5px}.corner h3{font-size:11px;margin-bottom:4px}input,textarea,select{border-color:#aaa!important;background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.print-table th,.print-table td{padding:3px;font-size:8px}.guide-grid{gap:5px}.guide-item{padding:6px;font-size:9px}.print-note{font-size:8px}}
 </style>
 </head>
 <body>
+<header class="app-header">
+  <div class="header-row">
+    <div class="brand">Intersection Heat Field Protocol</div>
+    <nav class="tabs" aria-label="Site sections">
+      <button class="tab-btn active" data-tab="overview">Overview</button>
+      <button class="tab-btn" data-tab="steps">Field Steps</button>
+      <button class="tab-btn" data-tab="record">What to Record</button>
+      <button class="tab-btn" data-tab="data">Data + Box</button>
+      <button class="tab-btn" data-tab="print">Printable Sheet</button>
+    </nav>
+    <div class="tools"><button class="tool-btn primary" id="printBtn">Print sheet</button></div>
+  </div>
+</header>
 <main>
-  <nav class="tabs">
-    <button class="tab active" data-tab="main">Main</button>
-    <button class="tab" data-tab="data">Data</button>
-    <button class="tab" data-tab="steps">How-To Steps</button>
-    <button class="tab" data-tab="glossary">Glossary</button>
-    <button class="tab" data-tab="images">Images</button>
-    <button class="tab" data-tab="testruns">Test Runs with Kestrel</button>
-  </nav>
+<section class="panel active" id="overview">
+  <h1>Pedestrian heat, shade &amp; intersection observations</h1>
+  <p class="lede">Use three Kestrel 5400 Heat Stress Trackers and synchronized pedestrian observations to measure how <strong>pedestrian-scale thermal exposure differs across sun, shade, corners, and time</strong>.</p>
+  <div class="callout"><strong>Field logic:</strong> weather station conditions describe the broader atmosphere; paired Kestrels quantify what pedestrians experience locally; corner observations document shade opportunity and behavior.</div>
+  <h2>Core structure</h2>
+  <div class="flow"><span class="pill">Intersection</span><span class="arrow">→</span><span class="pill">Corner</span><span class="arrow">→</span><span class="pill">Time block</span><span class="arrow">→</span><span class="pill">Signal cycle / pedestrians</span></div>
+  <h2>Minimum viable field output</h2>
+  <div class="grid">
+    <div class="card"><h3>Thermal</h3><ul class="compact"><li>Air temperature</li><li>Globe temperature</li><li>Relative humidity</li><li>Wind speed</li><li>WBGT</li><li>MRT later, if defensibly derived</li></ul></div>
+    <div class="card"><h3>Spatial + behavioral</h3><ul class="compact"><li>Usable dwell area and shaded fraction</li><li>Shade source and distance to shade</li><li>Pedestrian arrivals / waiting</li><li>Sun vs shade occupancy</li><li>Sun→shade / shade→sun movements</li><li>Crossing initiation by pedestrian signal phase</li></ul></div>
+  </div>
+  <h2>Four intersections</h2>
+  <p>Use the same protocol at all four sites. Do not treat an intersection as one thermal condition: each of its four corners can have a different shade geometry and can change materially over the day.</p>
+</section>
 
-  <!-- Main: high-level project overview -->
-  <section id="main" class="panel">
-    <h1>Kestrel 5400 — Heat Stress & Microclimate Demo</h1>
-    <p>
-      This project evaluates the practicality of using a Kestrel 5400 Heat Stress Tracker to measure
-      <strong>temperature</strong> and other relevant environmental factors at <strong>transit stops</strong> and
-      <strong>intersections</strong>. We collect field data and visualize indices used in heat-risk management.
-    </p>
+<section class="panel" id="steps">
+  <h1>Field steps</h1>
+  <ol>
+    <li><strong>Before study:</strong> label sensors K01–K03, synchronize clocks, use the same units and 1-minute logging interval, then co-locate all three for 30–60 minutes to check offsets.</li>
+    <li><strong>Before each session:</strong> verify time, battery, memory, logging, site ID, corner IDs, and signal timing.</li>
+    <li><strong>Map the four corners:</strong> identify usable dwell area, crosswalk/pushbutton location, tree/building shade, and nearest usable shade.</li>
+    <li><strong>Deploy Kestrels:</strong> preferred setup is K01 representative sun, K02 representative shade, K03 stable nearby reference. Keep heights comparable and outside pedestrian paths.</li>
+    <li><strong>Photograph placements:</strong> one overview plus each sensor/corner setup. Record whether each sensor is in sun or shade and the shade source.</li>
+    <li><strong>Start synchronized observation:</strong> record environmental conditions automatically and pedestrian/shade/signal observations by time block or signal cycle.</li>
+    <li><strong>Repeat across time:</strong> revisit sites when façade/tree shade has moved enough to change corner exposure.</li>
+    <li><strong>Close session:</strong> stop logs, export raw Kestrel CSVs, export observation data, upload photos/notes, and verify all files open in Box.</li>
+  </ol>
+  <div class="callout"><strong>Rule:</strong> collect broadly and consistently. Derive MRT, sun–shade contrasts, rates, and statistical models later. Do not manually edit RAW files.</div>
+</section>
 
-    <p>
-      View the project on GitHub:
-      <a href="https://github.com/robert-z-lehr/kestrel-wbgt-demo/tree/main" target="_blank" rel="noopener">
-      robert-z-lehr/kestrel-wbgt-demo
-      </a>
-    </p>
+<section class="panel" id="record">
+  <h1>What to record</h1>
+  <div class="table-wrap"><table>
+    <thead><tr><th style="width:18%">Variable</th><th style="width:32%">Record</th><th>How</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Corner ID</strong></td><td>NW / NE / SE / SW or fixed site code</td><td>Use the same IDs every visit.</td></tr>
+      <tr><td><strong>Dwell area</strong></td><td>Usable waiting area, m²</td><td>Approximate from measured dimensions or GIS; exclude roadway, planters, blocked space.</td></tr>
+      <tr><td><strong>Shade fraction</strong></td><td>% of usable dwell area shaded</td><td>Estimate consistently at the observation timestamp; photograph the corner.</td></tr>
+      <tr><td><strong>Shade source</strong></td><td>Tree / façade / structure / none</td><td>Record dominant source; note mixed shade if necessary.</td></tr>
+      <tr><td><strong>Distance to shade</strong></td><td>Approx. meters from typical waiting point</td><td>Use shortest practical pedestrian path to usable shade.</td></tr>
+      <tr><td><strong>Kestrel</strong></td><td>Ta, Tg, RH, wind, WBGT + timestamp</td><td>Automatic 1-minute log. Record sensor ID and sun/shade state.</td></tr>
+      <tr><td><strong>Pedestrians</strong></td><td>Arrivals / waiting count</td><td>Count by signal cycle or fixed time block. Keep denominator consistent.</td></tr>
+      <tr><td><strong>Shade occupancy</strong></td><td># waiting in shade / # waiting in sun</td><td>Count at a consistent point in each cycle, preferably near peak queue.</td></tr>
+      <tr><td><strong>Shade movement</strong></td><td>Sun→shade and shade→sun</td><td>Count observable relocations while waiting; do not infer motive.</td></tr>
+      <tr><td><strong>Signal phase</strong></td><td>WALK / flashing DON'T WALK / steady DON'T WALK</td><td>Code phase when crossing is initiated.</td></tr>
+      <tr><td><strong>Context</strong></td><td>Clouds, obstruction, construction, event surge, anomaly</td><td>Write only conditions likely to change exposure or behavior.</td></tr>
+    </tbody>
+  </table></div>
+  <h2>Useful derived values later</h2>
+  <ul class="compact"><li>Shade fraction = shaded usable dwell area / total usable dwell area.</li><li>Shade occupancy rate = pedestrians waiting in shade / pedestrians with shade available.</li><li>Shade-seeking rate = sun→shade movements / eligible pedestrians.</li><li>Thermal contrast = sun measurement − shade measurement for Tg, WBGT and MRT.</li></ul>
+</section>
 
-    <h2>Purpose</h2>
-    <ul>
-      <li>Assess repeatable measurement protocols at curbside locations (bus stops, crosswalks, medians).</li>
-      <li>Compare micro-environments (sun/shade, asphalt/grass, wind exposure) and their impact on heat stress.</li>
-      <li>Demonstrate transparent <em>data provenance</em>: device settings, placement, logging, and export steps.</li>
-    </ul>
+<section class="panel" id="data">
+  <h1>Data transfer + Box</h1>
+  <h2>After every session</h2>
+  <ol><li>Stop Kestrel logging.</li><li>Connect through Kestrel LiNK and export the complete raw log as CSV.</li><li>Export the pedestrian/field observation file separately.</li><li>Rename files before upload.</li><li>Upload Kestrel logs, observations, photos, and notes to the session folder.</li><li>Open files from Box once to verify transfer.</li></ol>
+  <h2>File names</h2>
+  <p><code>SITE_YYYY-MM-DD_SESSION_K01_RAW.csv</code><br><code>SITE_YYYY-MM-DD_SESSION_BEHAVIOR_RAW.csv</code></p>
+  <h2>Folder structure</h2>
+  <pre style="overflow:auto;background:var(--soft);padding:12px;border-radius:8px">UT_Heat_Pedestrian_Safety/
+  00_Admin_Protocol/
+  01_Literature/
+  02_Historical_Data/
+  03_Field_Data/
+    SITEID/
+      YYYY-MM-DD_SESSION/
+        Kestrel_RAW/
+        Behavior_RAW/
+        Photos/
+        Field_Notes/
+  04_Processed_Data/
+  05_Analysis/
+  06_Figures_Maps/
+  07_Thesis_Deliverables/</pre>
+  <div class="callout"><strong>Data rule:</strong> RAW → CLEAN → ANALYSIS. Never overwrite or hand-correct the original exported CSV.</div>
+</section>
 
-    <h2>What’s in this site</h2>
-    <p class="muted">Use the tabs above:</p>
-    <p>
-      <span class="pill">Data</span> Upload or fetch your CSV and render charts.<br>
-      <span class="pill">How-To Steps</span> Field checklist based on the user guide (plus link to the full manual).<br>
-      <span class="pill">Glossary</span> Definitions, formulas, and how each variable is used.<br>
-      <span class="pill">Images</span> Site photos, device setup, and an example SVG illustration.<br>
-      <span class="pill">Test Runs with Kestrel</span> Templates to document your field procedures and results.
-    </p>
+<section class="panel" id="print">
+  <div class="sheet">
+    <div class="sheet-head"><div><h1>Intersection Heat Field Sheet</h1><p>One intersection × one observation session. Record all four corners.</p></div></div>
+    <div class="field-grid">
+      <div class="field"><label>Site ID</label><input type="text"></div><div class="field"><label>Date</label><input type="date"></div><div class="field"><label>Start</label><input type="time"></div><div class="field"><label>End</label><input type="time"></div><div class="field"><label>Observer</label><input type="text"></div><div class="field"><label>Session</label><input type="text" placeholder="AM / PM / #"></div>
+    </div>
+    <div class="corner-grid">
+      <div class="corner"><h3>Corner NW</h3><div class="field-grid"><div class="field"><label>Dwell m²</label><input type="text"></div><div class="field"><label>Shade %</label><input type="text"></div><div class="field"><label>Shade source</label><input type="text"></div><div class="field"><label>Dist. to shade m</label><input type="text"></div></div><textarea placeholder="Geometry / obstruction / photo ID"></textarea></div>
+      <div class="corner"><h3>Corner NE</h3><div class="field-grid"><div class="field"><label>Dwell m²</label><input type="text"></div><div class="field"><label>Shade %</label><input type="text"></div><div class="field"><label>Shade source</label><input type="text"></div><div class="field"><label>Dist. to shade m</label><input type="text"></div></div><textarea placeholder="Geometry / obstruction / photo ID"></textarea></div>
+      <div class="corner"><h3>Corner SE</h3><div class="field-grid"><div class="field"><label>Dwell m²</label><input type="text"></div><div class="field"><label>Shade %</label><input type="text"></div><div class="field"><label>Shade source</label><input type="text"></div><div class="field"><label>Dist. to shade m</label><input type="text"></div></div><textarea placeholder="Geometry / obstruction / photo ID"></textarea></div>
+      <div class="corner"><h3>Corner SW</h3><div class="field-grid"><div class="field"><label>Dwell m²</label><input type="text"></div><div class="field"><label>Shade %</label><input type="text"></div><div class="field"><label>Shade source</label><input type="text"></div><div class="field"><label>Dist. to shade m</label><input type="text"></div></div><textarea placeholder="Geometry / obstruction / photo ID"></textarea></div>
+    </div>
+    <div class="print-section"><h2>Kestrel deployment</h2><table class="print-table"><thead><tr><th>Sensor</th><th>Corner / location</th><th>Sun / shade</th><th>Height</th><th>Shade source / surface</th><th>Photo ID</th></tr></thead><tbody><tr><td>K01</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr><tr><td>K02</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr><tr><td>K03</td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr></tbody></table></div>
+    <div class="print-section"><h2>Observation blocks / signal cycles</h2><table class="print-table"><thead><tr><th>Time</th><th>Corner</th><th>Shade %</th><th>Total waiting</th><th>In shade</th><th>In sun</th><th>Sun→shade</th><th>Shade→sun</th><th>WALK starts</th><th>FDW starts</th><th>Steady DW starts</th><th>Notes</th></tr></thead><tbody id="obsRows"></tbody></table></div>
+    <div class="print-section"><h2>Session notes</h2><textarea style="min-height:55px" placeholder="Cloud changes, construction, events, sensor issue, signal anomaly, other conditions that could affect exposure or behavior."></textarea></div>
+  </div>
 
-    <h2>Outputs</h2>
-    <ul>
-      <li>Interactive charts (WBGT, components) for selected sessions.</li>
-      <li>Documented protocol and references (see <code>docs/</code> folder in the repo).</li>
-      <li>Reproducible folder layout for GitHub Pages deployments.</li>
-    </ul>
-
-    <p class="muted">Tip: See <code>docs/protocol.md</code> and <code>docs/references.md</code> for methods and provenance.</p>
-  </section>
-
-  <!-- Loaded on demand -->
-  <section id="data" class="panel" hidden></section>
-  <section id="steps" class="panel" hidden></section>
-  <section id="glossary" class="panel" hidden></section>
-  <section id="images" class="panel" hidden></section>
-  <section id="testruns" class="panel" hidden></section>
+  <div class="sheet">
+    <div class="sheet-head"><div><h1>Field Variable Guide</h1><p>Minimal instructions. Collect consistently; derive metrics later.</p></div></div>
+    <div class="guide-grid">
+      <div class="guide-item"><strong>Dwell area (m²)</strong>Usable pedestrian waiting space only. Exclude roadway, fixed obstructions, planters, and unusable edge space.</div>
+      <div class="guide-item"><strong>Shade fraction (%)</strong>Estimate the fraction of usable dwell area shaded at that timestamp. Photograph the corner so the estimate can be checked later.</div>
+      <div class="guide-item"><strong>Shade source</strong>Tree, building façade, engineered structure, mixed, or none. Record the dominant source.</div>
+      <div class="guide-item"><strong>Distance to usable shade (m)</strong>Shortest practical pedestrian path from the normal waiting location to shade that can actually be occupied.</div>
+      <div class="guide-item"><strong>Kestrel measurements</strong>Log automatically every 1 minute: air temperature, globe temperature, RH, wind, WBGT and timestamp. Record sensor ID and its sun/shade condition.</div>
+      <div class="guide-item"><strong>Sensor placement</strong>Keep K01/K02/K03 at comparable pedestrian-relevant height and outside the travel path. Prefer representative sun, representative shade, and stable reference.</div>
+      <div class="guide-item"><strong>Total waiting</strong>Count people waiting on the corner at the same point in each signal cycle or use a consistent fixed time block.</div>
+      <div class="guide-item"><strong>In shade / in sun</strong>Classify by the pedestrian's primary body position at the observation instant. Keep ambiguous boundary cases consistent.</div>
+      <div class="guide-item"><strong>Sun→shade / shade→sun</strong>Count observable relocations while the person is waiting. Record movement, not presumed motivation.</div>
+      <div class="guide-item"><strong>Crossing phase</strong>Code the pedestrian signal displayed when crossing begins: WALK, flashing DON'T WALK, or steady DON'T WALK.</div>
+      <div class="guide-item"><strong>Context notes</strong>Only note changes likely to matter: clouds, unusual wind, construction, blocked shade, event surge, signal anomaly, sensor disturbance.</div>
+      <div class="guide-item"><strong>Photos</strong>At minimum: intersection overview plus each sensor/corner setup. Use filenames that include site, date, corner and sequence.</div>
+    </div>
+    <p class="print-note"><strong>Close-out:</strong> export Kestrel CSVs through LiNK; export observation data separately; upload RAW files, photos and notes to the matching Box session folder; verify the files; do not edit RAW.</p>
+  </div>
+</section>
 </main>
-
 <script>
-/* --- Tabs & lazy loading --- */
-const tabs = document.querySelectorAll('.tab');
-const panels = {
-  main: document.getElementById('main'),
-  data: document.getElementById('data'),
-  steps: document.getElementById('steps'),
-  glossary: document.getElementById('glossary'),
-  images: document.getElementById('images'),
-  testruns: document.getElementById('testruns')
-};
-
-async function openTab(name){
-  tabs.forEach(t => t.classList.toggle('active', t.dataset.tab===name));
-  Object.entries(panels).forEach(([k,el]) => el.hidden = (k!==name));
-  if (name==='data' && !panels.data.dataset.loaded){
-    const html = await fetch('html/data.html').then(r=>r.text());
-    panels.data.innerHTML = html;
-    panels.data.dataset.loaded = '1';
-  }
-  if (name==='steps' && !panels.steps.dataset.loaded){
-    const html = await fetch('html/steps.html').then(r=>r.text());
-    panels.steps.innerHTML = html;
-    panels.steps.dataset.loaded = '1';
-  }
-  if (name==='glossary' && !panels.glossary.dataset.loaded){
-    const html = await fetch('html/glossary.html').then(r=>r.text());
-    panels.glossary.innerHTML = html;
-    panels.glossary.dataset.loaded = '1';
-  }
-  if (name==='images' && !panels.images.dataset.loaded){
-    const html = await fetch('html/images.html').then(r=>r.text());
-    panels.images.innerHTML = html;
-    panels.images.dataset.loaded = '1';
-  }
-  if (name==='testruns' && !panels.testruns.dataset.loaded){
-    const html = await fetch('html/testruns.html').then(r=>r.text());
-    panels.testruns.innerHTML = html;
-    panels.testruns.dataset.loaded = '1';
-  }
-}
-tabs.forEach(btn => btn.addEventListener('click', () => openTab(btn.dataset.tab)));
+const tabs=[...document.querySelectorAll('.tab-btn')];
+const panels=[...document.querySelectorAll('.panel')];
+function openTab(id){tabs.forEach(b=>b.classList.toggle('active',b.dataset.tab===id));panels.forEach(p=>p.classList.toggle('active',p.id===id));}
+tabs.forEach(b=>b.addEventListener('click',()=>openTab(b.dataset.tab)));
+const tbody=document.getElementById('obsRows');
+for(let i=0;i<10;i++){const tr=document.createElement('tr');tr.innerHTML='<td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td>';tbody.appendChild(tr)}
+document.getElementById('printBtn').addEventListener('click',()=>{openTab('print');panels.forEach(p=>p.classList.remove('print-target'));document.getElementById('print').classList.add('print-target');setTimeout(()=>window.print(),50)});
+window.addEventListener('afterprint',()=>document.getElementById('print').classList.remove('print-target'));
 </script>
 </body>
 </html>
